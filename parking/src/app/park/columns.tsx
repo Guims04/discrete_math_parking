@@ -19,8 +19,8 @@ import { useState } from "react"
 export type Park = {
   id: number,
   license_plate: string,
-  entry_time: Date,
-  exit_time?: Date
+  entry_time: string,
+  exit_time?: string
 }
 
 export const columns: ColumnDef<Park>[] = [
@@ -35,15 +35,12 @@ export const columns: ColumnDef<Park>[] = [
   {
     accessorKey: "entry_time",
     header: "Hora de entrada",
-    cell: ({ row }) => {
-      const dateTime: Date = row.getValue("entry_time");
-      const formatedDate = format(dateTime, 'HH:mm (dd MMM, yyyy)');
-      return formatedDate;
-    }
   },
   {
     id: "actions",
     cell: (props: any) => {
+
+      const id = props.row.getValue("id");
  
       return (
         <DropdownMenu>
@@ -55,7 +52,7 @@ export const columns: ColumnDef<Park>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Ações</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => { props.setFormDialogStatus(true) }} className="cursor-pointer">
+            <DropdownMenuItem onClick={() => { props.openDialogById(id) }} className="cursor-pointer">
               Altera informações
             </DropdownMenuItem>
             <DropdownMenuSeparator />

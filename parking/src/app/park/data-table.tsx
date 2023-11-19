@@ -27,16 +27,16 @@ import { Plus } from "lucide-react";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  tableReference: number;
 }
 
-export function DataTable<TData, TValue>(
-  { columns, data }: DataTableProps<TData, TValue>,
-  ref: any
-) {
+export function DataTable<TData, TValue>({ columns, data, tableReference }: DataTableProps<TData, TValue>, ref: any) {
+  
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [formDialogStatus, setFormDialogStatus] = React.useState(false);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
+  const [registrationId, setRegistrationId] = React.useState(0);
+  
+
   const table = useReactTable({
     data,
     columns,
@@ -47,6 +47,11 @@ export function DataTable<TData, TValue>(
       columnFilters,
     },
   });
+
+  const openDialogById = (id: number) => {
+    setRegistrationId(id);
+    setFormDialogStatus(true)
+  }
 
   return (
     <div>
@@ -62,12 +67,17 @@ export function DataTable<TData, TValue>(
           className="max-w-sm"
         />
 
-        <ParkForm openDialog={formDialogStatus} onCloseDialog={() => { setFormDialogStatus(false) }} />
+        <ParkForm
+          openDialog={formDialogStatus}
+          onCloseDialog={() => { setFormDialogStatus(false) }}
+          id={registrationId}
+          tableReference={tableReference}
+        />
         
         <Button
           variant="outline"
           className="h-8 w-8 p-0 text-blue-600 hover:bg-blue-600 hover:text-white border-blue-600"
-          onClick={() => { setFormDialogStatus(true) }}
+          onClick={() => { openDialogById(0) }}
         >
           <span className="sr-only">Open menu</span>
           <Plus className="h-4 w-4" />
@@ -106,7 +116,7 @@ export function DataTable<TData, TValue>(
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        { ...cell.getContext(), setFormDialogStatus }
+                        { ...cell.getContext(), openDialogById }
                       )}
                     </TableCell>
                   ))}
