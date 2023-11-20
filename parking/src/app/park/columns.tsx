@@ -27,7 +27,12 @@ export type Park = {
 export const columns: ColumnDef<Park>[] = [
   {
     accessorKey: "id",
-    header: "#"
+    header: "#",
+    cell: (props: any) => {
+      const id = props.getValue("id");
+      
+      return `${props.tableReference}x${id}`
+    }
   },
   {
     accessorKey: "license_plate",

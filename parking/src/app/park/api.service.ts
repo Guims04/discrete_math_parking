@@ -23,9 +23,9 @@ export const apiService = {
     }
   },
 
-  addData: async (position: number, infos: Park): Promise<void> => {
+  addData: async (infos: Park): Promise<void> => {
     try {
-      await axios.post(`${API_URL}/${position}`, infos);
+      return await axios.post(API_URL, infos);
     } catch (error) {
       console.error('Error adding data:', error);
     }

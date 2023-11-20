@@ -66,7 +66,10 @@ export default function ParkForm(props: ParkFormProps) {
           exit_time: exitTime ?? '',
           license_plate: plate ?? '',
         }
-        await apiService.addData(props.tableReference, data);
+        apiService.addData(data).then((result: any) => {
+          if (result.data.code === 3)
+            alert(result.data.state)
+        });
         props.onCloseDialog();
         // Recarrega a página
         window.location.reload();

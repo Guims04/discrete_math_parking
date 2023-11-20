@@ -17,9 +17,7 @@ app.use((req, res, next) => {
 });
 
 route.route('/api/data')
-  .get(getData);
-
-route.route('/api/data/:state')
+  .get(getData)
   .post(insertData);
 
 route.route('/api/data/:state/:id')

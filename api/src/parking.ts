@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import fs from "fs/promises";
 import path from "path";
-import { subHour } from "./service";
+import { checkStates, subHour } from "./service";
 
 const dataFilePath = path.join(__dirname, 'database.json');
 
@@ -40,15 +40,17 @@ export const getDataById = async (req: Request, res: Response) => {
 }
 
 export const insertData = async (req: Request, res: Response) => {
-  const state = parseInt(req.params.state, 10);
   try {
     const fileContent = await fs.readFile(dataFilePath, 'utf-8');
     const data: Park[][] = JSON.parse(fileContent);
     const newItem = req.body;
-    newItem.id = data[state].length ? data[state][data[state].length-1].id + 1 : 1;
-    data[state].push(newItem);
+
+    const state = checkStates(newItem.license_plate);
+
+    newItem.id = data[state.code].length ? data[state.code][data[state.code].length-1].id + 1 : 1;
+    data[state.code].push(newItem);
     await fs.writeFile(dataFilePath, JSON.stringify(data, null, 2), 'utf-8');
-    res.status(201).json(newItem);
+    res.status(201).json(state);
   } catch (error) {
     res.status(500).json({ error: 'Error adding data' });
   }

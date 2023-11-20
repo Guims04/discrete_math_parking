@@ -20,7 +20,7 @@ export const subHour = (time1: string, time2: string): string => {
 export const checkStates = (plate: string) => {
   const letters = getLettersIdentification(plate);
 
-  const intervalosEstados = [
+  const stateInterval = [
       { inicio: 'AAA', fim: 'BEZ', estado: 'Paraná', code: 0 },
       { inicio: 'RHA', fim: 'RHZ', estado: 'Paraná', code: 0 },
       { inicio: 'IAQ', fim: 'JDO', estado: 'Rio Grande do Sul', code: 1 },
@@ -34,13 +34,13 @@ export const checkStates = (plate: string) => {
       { inicio: 'RXK', fim: 'RYI', estado: 'Santa Catarina', code: 2 }
   ];
 
-  for (const intervalo of intervalosEstados) {
-      if (letters >= intervalo.inicio && letters <= intervalo.fim) {
-          return intervalo.code;
+  for (const interval of stateInterval) {
+      if (letters >= interval.inicio && letters <= interval.fim) {
+          return {code: interval.code, state: interval.estado};
       }
   }
 
-  return 3;
+  return {code: 3, state: 'Estado não cadastrado'};
 }
 
 const getLettersIdentification = (plate: string) => {
