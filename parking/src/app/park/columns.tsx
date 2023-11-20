@@ -37,6 +37,14 @@ export const columns: ColumnDef<Park>[] = [
     header: "Hora de entrada",
   },
   {
+    accessorKey: "exit_time",
+    header: "Hora de saída",
+    cell: (props: any) => {
+      const value = props.getValue("exit_time");
+      return value ? value : "-"
+    }
+  },
+  {
     id: "actions",
     cell: (props: any) => {
 

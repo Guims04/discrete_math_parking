@@ -19,6 +19,7 @@ export default function ParkForm(props: ParkFormProps) {
   const [dialogStatus, setDialogStatus] = React.useState(false);
   const [plate, setPlate] = React.useState<string | undefined>("");
   const [entryTime, setEntryTime] = React.useState<string | undefined>("");
+  const [exitTime, setExitTime] = React.useState<string | undefined>("");
 
   React.useEffect(() => {
     setDialogStatus(!!props.openDialog);
@@ -30,6 +31,7 @@ export default function ParkForm(props: ParkFormProps) {
         setData(result);
         setPlate(result?.license_plate);
         setEntryTime(result?.entry_time);
+        setExitTime(result?.exit_time);
       }).catch(error => {
         console.log(error);
         alert("Erro ao buscar informações");
@@ -39,6 +41,7 @@ export default function ParkForm(props: ParkFormProps) {
     } else {
       setPlate("");
       setEntryTime("");
+      setExitTime("");
     }
   }, [props.id]);
 
@@ -49,6 +52,7 @@ export default function ParkForm(props: ParkFormProps) {
         const data: Park = {
           id: props.id ?? 0,
           entry_time: entryTime ?? '',
+          exit_time: exitTime ?? '',
           license_plate: plate ?? '',
         }
         await apiService.updateData(props.tableReference, data);
@@ -59,6 +63,7 @@ export default function ParkForm(props: ParkFormProps) {
         const data: Park = {
           id: 0,
           entry_time: entryTime ?? '',
+          exit_time: exitTime ?? '',
           license_plate: plate ?? '',
         }
         await apiService.addData(props.tableReference, data);
@@ -90,6 +95,12 @@ export default function ParkForm(props: ParkFormProps) {
             placeholder="Hora de entrada"
             value={entryTime}
             onChange={(e) => setEntryTime(e.target.value)}
+          />
+          <Input
+            type="string"
+            placeholder="Hora de saída"
+            value={exitTime}
+            onChange={(e) => setExitTime(e.target.value)}
           />
           <Button onClick={handleWithInput}>Salvar</Button>
         </DialogHeader>
