@@ -12,6 +12,7 @@ interface ParkFormProps {
   onCloseDialog: () => void;
   id?: number;
   tableReference: number;
+  openAlertDialog: (title: string, description: string) => void;
 }
 
 export default function ParkForm(props: ParkFormProps) {
@@ -34,7 +35,7 @@ export default function ParkForm(props: ParkFormProps) {
         setExitTime(result?.exit_time);
       }).catch(error => {
         console.log(error);
-        alert("Erro ao buscar informações");
+        props.openAlertDialog("Alerta!", "Erro ao buscar informações");
         props.onCloseDialog();
         return;
       });
@@ -68,14 +69,14 @@ export default function ParkForm(props: ParkFormProps) {
         }
         apiService.addData(data).then((result: any) => {
           if (result.data.code === 3)
-            alert(result.data.state)
+            props.openAlertDialog("Alerta!", result.data.state);
+          else window.location.reload();
+          props.onCloseDialog();
         });
-        props.onCloseDialog();
         // Recarrega a página
-        window.location.reload();
       }
     } else {
-      return alert('Insira valores válidos.');
+      props.openAlertDialog("Alerta!", "Insira valores válidos");
     }
   };
 

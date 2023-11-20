@@ -5,18 +5,6 @@
       "license_plate": "BRA2E18",
       "entry_time": "11:21",
       "exit_time": "12:41"
-    },
-    {
-      "id": 2,
-      "entry_time": "10:20",
-      "exit_time": "10:23",
-      "license_plate": "AAA4B34"
-    },
-    {
-      "id": 3,
-      "entry_time": "10:00",
-      "exit_time": "10:23",
-      "license_plate": "BAA4B34"
     }
   ],
   [
@@ -32,6 +20,12 @@
       "id": 1,
       "entry_time": "10:23",
       "exit_time": "10:34",
+      "license_plate": "QTK4K45"
+    },
+    {
+      "id": 2,
+      "entry_time": "10:30",
+      "exit_time": "",
       "license_plate": "QTK4K45"
     }
   ],

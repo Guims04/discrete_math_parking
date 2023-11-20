@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import ParkForm from "./park-form";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import DialogAlert from "./dialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -33,8 +34,11 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({ columns, data, tableReference }: DataTableProps<TData, TValue>, ref: any) {
   
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [formDialogStatus, setFormDialogStatus] = React.useState(false);
   const [registrationId, setRegistrationId] = React.useState(0);
+  const [formDialogStatus, setFormDialogStatus] = React.useState(false);
+  const [alertDialogStatus, setAlertDialogStatus] = React.useState(false);
+  const [titleAlert, setTitleAlert] = React.useState("");
+  const [descriptionAlert, setDescriptionAlert] = React.useState("");
   
 
   const table = useReactTable({
@@ -57,6 +61,12 @@ export function DataTable<TData, TValue>({ columns, data, tableReference }: Data
     }
   }
 
+  const openAlertDialog = (title: string, description: string) => {
+    setAlertDialogStatus(true);
+    setTitleAlert(title);
+    setDescriptionAlert(description);
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between py-4">
@@ -76,6 +86,14 @@ export function DataTable<TData, TValue>({ columns, data, tableReference }: Data
           onCloseDialog={() => { setFormDialogStatus(false) }}
           id={registrationId}
           tableReference={tableReference}
+          openAlertDialog={openAlertDialog}
+        />
+
+        <DialogAlert
+          openDialog={alertDialogStatus}
+          onCloseDialog={() => { setAlertDialogStatus(false); window.location.reload(); }}
+          title={titleAlert}
+          description={descriptionAlert}
         />
         
         <Button
@@ -120,7 +138,7 @@ export function DataTable<TData, TValue>({ columns, data, tableReference }: Data
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        { ...cell.getContext(), openDialogById, tableReference }
+                        { ...cell.getContext(), openDialogById, openAlertDialog, tableReference }
                       )}
                     </TableCell>
                   ))}

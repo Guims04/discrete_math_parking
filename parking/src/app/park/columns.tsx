@@ -60,12 +60,11 @@ export const columns: ColumnDef<Park>[] = [
       const exit = (id: number) => {
         if (exit_time) {
           apiService.removeData(props.tableReference, id).then((result: any) => {
-            alert("Valor da saída: R$" + (result.data.value).toFixed(2).replace('.', ','));
-            window.location.reload();
+            props.openAlertDialog('Ticket de saída', "Saída liberada: R$" + (result.data.value).toFixed(2).replace('.', ','));
             props.openDialogById(-1);
           });
         } else {
-          alert("Não é possível saída sem hora de entrada");
+          props.openAlertDialog('Alerta!', "Não é possível saída sem hora de entrada");
         }
       }
  
