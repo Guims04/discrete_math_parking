@@ -44,7 +44,7 @@ export const insertData = async (req: Request, res: Response) => {
     const fileContent = await fs.readFile(dataFilePath, 'utf-8');
     const data: Park[][] = JSON.parse(fileContent);
     const newItem = req.body;
-    newItem.id = data.length + 1;
+    newItem.id = data[state].length ? data[state][data[state].length-1].id + 1 : 1;
     data[state].push(newItem);
     await fs.writeFile(dataFilePath, JSON.stringify(data, null, 2), 'utf-8');
     res.status(201).json(newItem);

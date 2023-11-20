@@ -17,7 +17,6 @@ export const apiService = {
   getDataById: async (id: number, position: number): Promise<Park | undefined> => {
     try {
       const response = await axios.get(`${API_URL}/${position}/${id}`);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(`Error fetching data by ID ${id}:`, error);
@@ -26,7 +25,7 @@ export const apiService = {
 
   addData: async (position: number, infos: Park): Promise<void> => {
     try {
-      await axios.post(API_URL, infos);
+      await axios.post(`${API_URL}/${position}`, infos);
     } catch (error) {
       console.error('Error adding data:', error);
     }

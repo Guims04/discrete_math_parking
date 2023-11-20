@@ -56,7 +56,15 @@ export default function ParkForm(props: ParkFormProps) {
         // Recarrega a página
         window.location.reload();
       } else {
-        
+        const data: Park = {
+          id: 0,
+          entry_time: entryTime ?? '',
+          license_plate: plate ?? '',
+        }
+        await apiService.addData(props.tableReference, data);
+        props.onCloseDialog();
+        // Recarrega a página
+        window.location.reload();
       }
     } else {
       return alert('Insira valores válidos.');

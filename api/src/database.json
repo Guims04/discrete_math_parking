@@ -5,9 +5,25 @@
       "license_plate": "BRA2E18",
       "entry_time": "11:21",
       "exit_time": "10:20"
+    },
+    {
+      "id": 2,
+      "entry_time": "23",
+      "license_plate": "23"
     }
   ],
-  [],
+  [
+    {
+      "id": 1,
+      "entry_time": "23",
+      "license_plate": "23"
+    },
+    {
+      "id": 2,
+      "entry_time": "24",
+      "license_plate": "24"
+    }
+  ],
   [],
   []
 ]
