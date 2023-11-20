@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Park } from "./columns";
 import { Label } from '@radix-ui/react-dropdown-menu';
-import { getDataById, updateData } from './database';
+import { apiService } from './api.service';
 
 interface ParkFormProps {
   openDialog?: boolean;
@@ -26,10 +26,15 @@ export default function ParkForm(props: ParkFormProps) {
 
   React.useEffect(() => {
     if (props.id && props.id !== 0) {
-      getDataById(props.tableReference, props.id ?? 1).then((result) => {
+      apiService.getDataById(props.id ?? 1, props.tableReference).then((result) => {
         setData(result);
         setPlate(result?.license_plate);
         setEntryTime(result?.entry_time);
+      }).catch(error => {
+        console.log(error);
+        alert("Erro ao buscar informações");
+        props.onCloseDialog();
+        return;
       });
     } else {
       setPlate("");
@@ -38,7 +43,7 @@ export default function ParkForm(props: ParkFormProps) {
   }, [props.id]);
 
 
-  const handleWithInput = () => {
+  const handleWithInput = async () => {
     if (plate != "" && entryTime != "") {
       if (props.id != 0) {
         const data: Park = {
@@ -46,8 +51,10 @@ export default function ParkForm(props: ParkFormProps) {
           entry_time: entryTime ?? '',
           license_plate: plate ?? '',
         }
-        updateData(0, data);
+        await apiService.updateData(props.tableReference, data);
         props.onCloseDialog();
+        // Recarrega a página
+        window.location.reload();
       } else {
         
       }

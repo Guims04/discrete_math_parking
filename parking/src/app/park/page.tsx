@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { Park, columns } from "./columns";
 import { DataTable } from "./data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getData } from './database';
+import { apiService } from './api.service';
 
 export default async function ParkPlace() {
-  let data = await getData();
+  let data = await apiService.getData();
 
   return (
     <Tabs defaultValue="state_1" className="w-100 p-10">
