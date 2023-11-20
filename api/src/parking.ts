@@ -88,15 +88,19 @@ export const deleteData = async (req: Request, res: Response) => {
     const hour: number = parseInt(time.split(":")[0]);
     const minutes: number = parseInt(time.split(":")[1]);
 
+    console.log(time);
+
     // Ceil (função teto)
     let result;
-    if (minutes == 0) result = hour;
+    if (minutes <= 15 && hour == 0) result = -1;
+    else if (minutes == 0) result = hour;
     else result = hour + 1;
 
     // formula
     let value: number;
-    if (result < 2) value = 7;
-    else value = 7 + ((result - 2) * 2.50);
+    if (result <= 3 && result != -1) value = 7;
+    else if (result === -1) value = 0;
+    else value = 7 + ((result - 3) * 2.50);
 
     newData[state] = data[state].filter((item) => item.id !== id);
     if (newData[state].length < oldLength) {

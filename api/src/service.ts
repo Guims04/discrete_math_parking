@@ -16,3 +16,35 @@ export const subHour = (time1: string, time2: string): string => {
 
   return result;
 }
+
+export const checkStates = (plate: string) => {
+  const letters = getLettersIdentification(plate);
+
+  const intervalosEstados = [
+      { inicio: 'AAA', fim: 'BEZ', estado: 'Paraná', code: 0 },
+      { inicio: 'RHA', fim: 'RHZ', estado: 'Paraná', code: 0 },
+      { inicio: 'IAQ', fim: 'JDO', estado: 'Rio Grande do Sul', code: 1 },
+      { inicio: 'LWR', fim: 'MMM', estado: 'Santa Catarina', code: 2 },
+      { inicio: 'OKD', fim: 'OKH', estado: 'Santa Catarina', code: 2 },
+      { inicio: 'QHA', fim: 'QJZ', estado: 'Santa Catarina', code: 2 },
+      { inicio: 'QTK', fim: 'QTM', estado: 'Santa Catarina', code: 2 },
+      { inicio: 'RAA', fim: 'RAJ', estado: 'Santa Catarina', code: 2 },
+      { inicio: 'RDS', fim: 'REB', estado: 'Santa Catarina', code: 2 },
+      { inicio: 'RKW', fim: 'RLP', estado: 'Santa Catarina', code: 2 },
+      { inicio: 'RXK', fim: 'RYI', estado: 'Santa Catarina', code: 2 }
+  ];
+
+  for (const intervalo of intervalosEstados) {
+      if (letters >= intervalo.inicio && letters <= intervalo.fim) {
+          return intervalo.code;
+      }
+  }
+
+  return 3;
+}
+
+const getLettersIdentification = (plate: string) => {
+  const letters = plate.replace(/[^a-zA-Z]/g, '');
+
+  return letters;
+}
