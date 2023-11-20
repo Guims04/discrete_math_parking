@@ -25,7 +25,7 @@ route.route('/api/data/:state')
 route.route('/api/data/:state/:id')
   .get(getDataById)
   .put(updateData)
-  .put(deleteData);
+  .delete(deleteData);
 
 app.use(route);
 app.listen(3333, () => console.log('Server is running on port 3333!'));

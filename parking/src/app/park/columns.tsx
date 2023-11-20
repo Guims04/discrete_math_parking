@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useState } from "react"
+import { apiService } from "./api.service"
 
 export type Park = {
   id: number,
@@ -49,6 +50,19 @@ export const columns: ColumnDef<Park>[] = [
     cell: (props: any) => {
 
       const id = props.row.getValue("id");
+      const exit_time = props.row.getValue("exit_time");
+
+      const exit = (id: number) => {
+        if (exit_time) {
+          apiService.removeData(props.tableReference, id).then((result: any) => {
+            alert("Valor da saída: R$" + (result.data.value).toFixed(2).replace('.', ','));
+            window.location.reload();
+            props.openDialogById(-1);
+          });
+        } else {
+          alert("Não é possível saída sem hora de entrada");
+        }
+      }
  
       return (
         <DropdownMenu>
@@ -64,7 +78,7 @@ export const columns: ColumnDef<Park>[] = [
               Altera informações
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-500 cursor-pointer">Saída</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => { exit(id); }} className="text-red-500 cursor-pointer">Saída</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

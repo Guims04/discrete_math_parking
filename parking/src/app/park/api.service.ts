@@ -41,7 +41,7 @@ export const apiService = {
 
   removeData: async (position: number, id: number): Promise<void> => {
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      return await axios.delete(`${API_URL}/${position}/${id}`);
     } catch (error) {
       console.error(`Error removing data at position ${position}, ID ${id}:`, error);
     }

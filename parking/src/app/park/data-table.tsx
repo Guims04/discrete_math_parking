@@ -49,8 +49,12 @@ export function DataTable<TData, TValue>({ columns, data, tableReference }: Data
   });
 
   const openDialogById = (id: number) => {
-    setRegistrationId(id);
-    setFormDialogStatus(true)
+    if (id != -1) {
+      setRegistrationId(id);
+      setFormDialogStatus(true)
+    } else {
+      setFormDialogStatus(false)
+    }
   }
 
   return (
@@ -116,7 +120,7 @@ export function DataTable<TData, TValue>({ columns, data, tableReference }: Data
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        { ...cell.getContext(), openDialogById }
+                        { ...cell.getContext(), openDialogById, tableReference }
                       )}
                     </TableCell>
                   ))}

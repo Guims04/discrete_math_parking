@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import fs from "fs/promises";
 import path from "path";
+import { subHour } from "./service";
 
 const dataFilePath = path.join(__dirname, 'database.json');
 
@@ -78,14 +79,34 @@ export const deleteData = async (req: Request, res: Response) => {
   try {
     const fileContent = await fs.readFile(dataFilePath, 'utf-8');
     let data: Park[][] = JSON.parse(fileContent);
-    const newData = data[state].filter((item) => item.id !== id);
-    if (newData.length < data.length) {
+    let newData = data;
+    const oldLength = data[state].length;
+
+    const car: Park[] = data[state].filter((item) => item.id === id);
+
+    const time: string = subHour(car[0].exit_time ?? "", car[0].entry_time);
+    const hour: number = parseInt(time.split(":")[0]);
+    const minutes: number = parseInt(time.split(":")[1]);
+
+    // Ceil (função teto)
+    let result;
+    if (minutes == 0) result = hour;
+    else result = hour + 1;
+
+    // formula
+    let value: number;
+    if (result < 2) value = 7;
+    else value = 7 + ((result - 2) * 2.50);
+
+    newData[state] = data[state].filter((item) => item.id !== id);
+    if (newData[state].length < oldLength) {
       await fs.writeFile(dataFilePath, JSON.stringify(newData, null, 2), 'utf-8');
-      res.status(200).json({ success: true });
+      res.status(200).json({ value });
     } else {
       res.status(404).json({ error: 'Item not found' });
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: 'Error deleting data' });
   }
 }
